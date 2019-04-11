@@ -82,6 +82,28 @@ describe('routes : topics', () => {
                 })
             })
         });
+        
+        it('should not create a topic that fails validation', (done) => {
+            request({
+                url: `${base}create`,
+                method: 'POST',
+                form: {
+                   title: 'a',
+                   description: 'b' 
+                }
+            }, (error, response) => {
+                Topic.findOne({ where: { title: 'a' } })
+                .then(topic => {
+                    expect(topic).toBeNull()
+                    done();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                })
+            })
+            
+        })
          
     });
     
@@ -140,7 +162,7 @@ describe('routes : topics', () => {
                 const options = {
                    url: `${base}${this.topic.id}/update`,
                    form: {
-                     title: "JavaScript Frameworks",
+                     title: "JS Frameworks",
                      description: "There are a lot of them"
                    }
                  };
@@ -152,7 +174,7 @@ describe('routes : topics', () => {
                      where: { id: this.topic.id }
                    })
                    .then((topic) => {
-                     expect(topic.title).toBe("JavaScript Frameworks");
+                     expect(topic.title).toBe("JS Frameworks");
                      done();
                    });
                  });
