@@ -1,8 +1,6 @@
 const postQueries = require("../db/queries.posts.js");
 
 
-
-
 module.exports = {
     
     new(req, res, next) {
@@ -14,7 +12,8 @@ module.exports = {
         let newPost = {
             title: req.body.title,
             body: req.body.body,
-            topicId: req.params.topicId
+            topicId: req.params.topicId,
+            userId: req.user.id
         };
         postQueries.addPost(newPost, (err, post) => {
             (err) ? res.redirect(500, '/posts/new') : res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`)
